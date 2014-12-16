@@ -11,6 +11,7 @@ sed "s/simple.css/default.css/g" slides.html \
   | sed "s/007020/40B261/g" \
   | sed "s/06287e/88A8F9/g" \
   | sed "s/4070a0/8EC3F9/g" \
+  | sed "s/902000/FFB412/g" \
   > index.html
 
 rm slides.html

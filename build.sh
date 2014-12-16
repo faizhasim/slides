@@ -15,3 +15,8 @@ sed "s/simple.css/default.css/g" slides.html \
   > index.html
 
 rm slides.html
+
+
+docker run -v `pwd`:/source jagregory/pandoc  -s /source/slides.md -o /source/functional-programming.pdf  --latex-engine=xelatex
+docker run -v `pwd`:/source jagregory/pandoc  -s /source/slides.md -o /source/functional-programming.epub  --latex-engine=xelatex
+docker run -v `pwd`:/source jagregory/pandoc  -s /source/slides.md -o /source/functional-programming.mobi  --latex-engine=xelatex

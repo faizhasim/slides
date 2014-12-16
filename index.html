@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Mohd Faiz Hasim - ServiceRocket" />
+  <title>Functional Programming</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="reveal.js/css/reveal.min.css"/>
+    <style type="text/css">code{white-space: pre;}</style>
+    <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #40B261; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #8EC3F9; }
+code > span.st { color: #8EC3F9; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #40B261; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #88A8F9; }
+code > span.er { color: #ff0000; font-weight: bold; }
+    </style>
+    <link rel="stylesheet" href="reveal.js/css/theme/default.css" id="theme">
+  <link rel="stylesheet" media="print" href="reveal.js/css/print/pdf.css" />
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section>
+    <h1 class="title">Functional Programming</h1>
+    <h2 class="author">Mohd Faiz Hasim - ServiceRocket</h2>
+    <h3 class="date">8 December 2014</h3>
+</section>
+
+<section><section id="what-is-functional-programming" class="titleslide slide level1"><h1>What is Functional Programming???</h1></section><section id="computation-as-functions" class="slide level2">
+<h1>Computation as Functions</h1>
+<ul>
+<li>Lambda Calculus</li>
+<li>Evaluating functions</li>
+<li>Avoid mutability</li>
+<li>Promotes declarative programming</li>
+</ul>
+</section><section class="slide level2">
+
+<h3 id="lambda-calculus---from-wikipedia">Lambda Calculus - From Wikipedia</h3>
+<ul>
+<li>sumOfSquares(x,y) = (x × x) + (y × y)</li>
+<li>(x,y) ⟼ (x × x) + (y × y)</li>
+<li>((x,y) ⟼ (x × x) + (y × y))(5,2)</li>
+<li>(((x,y) ⟼ (x × x) + (y × y))(5))(2)</li>
+</ul>
+<figure>
+<img src="images/dafuq.jpg" />
+</figure>
+</section></section>
+<section><section id="imperative-vs-functional" class="titleslide slide level1"><h1>Imperative vs Functional</h1></section><section id="example-data" class="slide level2">
+<h1>Example data</h1>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsribersOfSocialMedias = [{
+  <span class="dt">serviceName</span>: <span class="st">&#39;facebook&#39;</span>,
+  <span class="dt">count</span>: <span class="dv">35433</span>,
+  <span class="dt">hasOfficalSupport</span>: <span class="kw">true</span>
+}, {
+  <span class="dt">serviceName</span>: <span class="st">&#39;twitter&#39;</span>,
+  <span class="dt">count</span>: <span class="dv">25433</span>,
+  <span class="dt">hasOfficalSupport</span>: <span class="kw">true</span>
+}, {
+  <span class="dt">serviceName</span>: <span class="st">&#39;instagram&#39;</span>,
+  <span class="dt">count</span>: <span class="dv">2348</span>,
+  <span class="dt">hasOfficalSupport</span>: <span class="kw">false</span>
+}];</code></pre>
+<p>Should give total count of <code>63214</code>.</p>
+</section><section class="slide level2">
+
+<pre class="sourceCode javascript"><code class="sourceCode javascript">
+<span class="kw">var</span> total = <span class="dv">0</span>;
+<span class="kw">for</span> (<span class="kw">var</span> i = <span class="dv">0</span>; i &lt; <span class="ot">subsribersOfSocialMedias</span>.<span class="fu">length</span>; i++) {
+  total += subsribersOfSocialMedias[i].<span class="fu">count</span>;
+}
+
+<span class="ot">console</span>.<span class="fu">log</span>(total);</code></pre>
+<p>Imperative approach...</p>
+</section><section class="slide level2">
+
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsriberCount = <span class="kw">function</span>(subsriberInfo) {
+  <span class="kw">return</span> <span class="ot">subsriberInfo</span>.<span class="fu">count</span>;
+}
+
+<span class="kw">var</span> accumulate = <span class="kw">function</span>(previousValue, currentValue) {
+  <span class="kw">return</span> previousValue + currentValue;
+}
+
+<span class="kw">var</span> total = subsribersOfSocialMedias
+              .<span class="fu">map</span>(subsriberCount)
+              .<span class="fu">reduce</span>(accumulate);
+
+<span class="ot">console</span>.<span class="fu">log</span>(total);</code></pre>
+<p>Functional approach...</p>
+</section><section class="slide level2">
+
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> withOfficialSupport = <span class="kw">function</span>(officiallySupported) {
+  <span class="kw">return</span> <span class="kw">function</span>(subsriberInfo) {
+    <span class="kw">return</span> <span class="ot">subsriberInfo</span>.<span class="fu">hasOfficalSupport</span> === officiallySupported;
+  }
+}
+
+<span class="kw">var</span> total = subsribersOfSocialMedias
+              .<span class="fu">filter</span>(<span class="fu">withOfficialSupport</span>(<span class="kw">true</span>))
+              .<span class="fu">map</span>(subsriberCount)
+              .<span class="fu">reduce</span>(accumulate);</code></pre>
+<p>And, to filter by the officially supported social medias.</p>
+</section><section class="slide level2">
+
+<p>Exact same code with <a href="http://coffeescript.org/">CoffeeScript</a>:</p>
+<figure>
+<img src="images/coffee-script.png" />
+</figure>
+<pre class="coffeescript"><code>subsriberCount = (subsriberInfo) -&gt; subsriberInfo.count
+
+withOfficialSupport = (officiallySupported) -&gt; 
+    (subsriberInfo) -&gt; 
+        subsriberInfo.hasOfficalSupport is officiallySupported
+
+
+total = subsribersOfSocialMedias
+          .filter (withOfficialSupport true)
+          .map subsriberCount
+          .reduce ((a,b) -&gt; a + b)</code></pre>
+</section><section class="slide level2">
+
+<p>Wait, what about ECMAScript 6?</p>
+<figure>
+<img src="images/ecmascript6-javascript.png" />
+</figure>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsriberCount = (subsriberInfo) =&gt; <span class="ot">subsriberInfo</span>.<span class="fu">count</span>
+
+<span class="kw">var</span> accumulate = (previousValue, currentValue) =&gt; previousValue + currentValue
+
+<span class="kw">var</span> withOfficialSupport = (officiallySupported) =&gt; (subsriberInfo) =&gt; {
+  <span class="kw">return</span> <span class="ot">subsriberInfo</span>.<span class="fu">hasOfficalSupport</span> === officiallySupported
+}
+
+<span class="kw">let</span> total = subsribersOfSocialMedias
+            .<span class="fu">filter</span>(<span class="fu">withOfficialSupport</span>(<span class="kw">true</span>))
+            .<span class="fu">map</span>(subsriberCount)
+            .<span class="fu">reduce</span>((a,b) =&gt; a + b)</code></pre>
+<blockquote>
+<p>CoffeeScript influenced TC-39 decision making.</p>
+</blockquote>
+</section><section class="slide level2">
+
+<ul>
+<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce">Array#reduce</a></li>
+<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/map">Array#map</a></li>
+<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array#filter</a></li>
+<li><a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach">Array#forEach</a></li>
+</ul>
+<figure>
+<img src="images/no-ie9.jpg" alt="All modern browsers (≥ IE 9)" /><figcaption>All modern browsers (≥ IE 9)</figcaption>
+</figure>
+</section><section class="slide level2">
+
+<figure>
+<img src="images/so-much-fun.jpg" alt="Should we continue?" /><figcaption>Should we continue?</figcaption>
+</figure>
+</section></section>
+<section><section id="libraries-that-promotes-functional" class="titleslide slide level1"><h1>Libraries that Promotes Functional</h1></section><section id="underscore.js" class="slide level2">
+<h1><a href="http://underscorejs.org/">Underscore.JS</a></h1>
+<ul>
+<li>Very clean API and source code.</li>
+<li>Older established framework and products uses this (eg Confluence).</li>
+<li>My recommendation: ★★★☆☆</li>
+</ul>
+</section><section id="lo-dash" class="slide level2">
+<h1><a href="https://lodash.com/">Lo-Dash</a></h1>
+<ul>
+<li>Very similar to Underscore.JS, except more performant.</li>
+<li>Roadmap: Lazy sequence/stream.</li>
+<li>Supports compatibility with Underscore API.</li>
+<li>My recommendation: ★★★★☆</li>
+</ul>
+</section><section id="lazy.js" class="slide level2">
+<h1><a href="http://danieltao.com/lazy.js/">Lazy.js</a></h1>
+<ul>
+<li>Just like underscore, but not compatible at all.</li>
+<li>Key feature: Lazy evaluation on collections or stream.</li>
+<li>My recommendation: ★★★★★</li>
+</ul>
+</section><section id="allong.es" class="slide level2">
+<h1><a href="http://allong.es/">Allong.es</a></h1>
+<ul>
+<li>Facilitate using functions as first-class values.</li>
+<li>Fundementally build from <code>curry</code>-ing and partial applications.</li>
+<li>My recommendation: If you think you need it, use it.</li>
+</ul>
+</section><section class="slide level2">
+
+<figure>
+<img src="images/curry.jpg" alt="I like Curry... do you? Let&#39;s talk curry." /><figcaption>I like Curry... do you? Let's talk curry.</figcaption>
+</figure>
+</section></section>
+<section><section id="partial-application-and-currying" class="titleslide slide level1"><h1>Partial Application and Currying</h1></section><section id="recommended-reads" class="slide level2">
+<h1>Recommended reads</h1>
+<ul>
+<li><a href="http://eloquentjavascript.net/05_higher_order.html">Chapter 5 - Higher-Order Functions</a> of <a href="http://eloquentjavascript.net/">Eloquent Javascript</a> - by Marijn Haverbeke</li>
+<li><a href="https://leanpub.com/javascript-allonge">JavaScript Allongé</a> - by Reg Braithwaite</li>
+</ul>
+</section><section id="curry" class="slide level2">
+<h1>Curry</h1>
+<h3 id="revisiting-previous-equations">Revisiting previous equations</h3>
+<ul>
+<li>sumOfSquares(x,y) = (x × x) + (y × y)</li>
+<li>(x,y) ⟼ (x × x) + (y × y)</li>
+<li>((x,y) ⟼ (x × x) + (y × y))(5,2)</li>
+<li>(((x,y) ⟼ (x × x) + (y × y))(5))(2)</li>
+</ul>
+</section><section class="slide level2">
+
+<h3 id="sumofsquaresxy-x-x-y-y">sumOfSquares(x,y) = (x × x) + (y × y)</h3>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> sumOfSquares = <span class="kw">function</span>(x, y) {
+  <span class="kw">return</span> (x × x) + (y × y);
+}</code></pre>
+</section><section class="slide level2">
+
+<h3 id="xy-x-x-y-y">(x,y) ⟼ (x × x) + (y × y)</h3>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">function</span>(x, y) {
+  <span class="kw">return</span> (x × x) + (y × y);
+}</code></pre>
+<p>Just a lambda (anonymous function)</p>
+</section><section class="slide level2">
+
+<h3 id="currying">Currying?</h3>
+<p>Turning <code>((x,y) ⟼ (x × x) + (y × y))(5,2)</code> into <code>(((x,y) ⟼ (x × x) + (y × y))(5))(2)</code></p>
+<p>Mathematically, if <code>ƒ(x,y) = (x × x) + (y × y)</code>, then:</p>
+<p><code>h(x) = y ⟼ ƒ(x,y)</code></p>
+</section><section class="slide level2">
+
+<h3 id="partial-application">Partial application?</h3>
+<p><code>h(x) = y ⟼ ƒ(x,y)</code></p>
+<p><code>h(x)</code> is a partial application of the full application.</p>
+</section><section class="slide level2">
+
+<h3 id="curry-partial-application">Curry + Partial Application</h3>
+<p>Using <code>allong.es</code> at <a href="http://allong.es/try/">allong.es/try</a>:</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> curry = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">curry</span>;
+
+<span class="kw">var</span> giveGreetingFrom = <span class="fu">curry</span>(<span class="kw">function</span>(greeter, targetPerson) {
+  <span class="kw">return</span> greeter + <span class="st">&#39; is saying &quot;hi&quot; to &#39;</span> + targetPerson;
+})
+
+<span class="kw">var</span> giveGreetingFromTom = <span class="fu">giveGreetingFrom</span>(<span class="st">&#39;Tom&#39;</span>);
+
+<span class="ot">console</span>.<span class="fu">log</span>(giveGreetingFromTom);
+<span class="co">// Will return unary partial application function</span>
+
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="fu">giveGreetingFromTom</span>(<span class="st">&#39;Bill&#39;</span>));
+<span class="co">// Tom is saying &quot;hi&quot; to Bill</span>
+
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="fu">giveGreetingFrom</span>(<span class="st">&#39;Tom&#39;</span>, <span class="st">&#39;Bill&#39;</span>));
+<span class="co">// Tom is saying &quot;hi&quot; to Bill</span>
+
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="fu">giveGreetingFrom</span>(<span class="st">&#39;Tom&#39;</span>)(<span class="st">&#39;Bill&#39;</span>));
+<span class="co">// Tom is saying &quot;hi&quot; to Bill</span></code></pre>
+</section></section>
+<section><section id="useful-functions-allong.es" class="titleslide slide level1"><h1>Useful functions <code>allong.es</code></h1></section><section class="slide level2">
+
+<p>Shamelessly taken from <a href="http://allong.es/try/">allong.es/try</a>.</p>
+</section><section id="fluent" class="slide level2">
+<h1>Fluent</h1>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> fluent = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">fluent</span>;
+    
+Role = <span class="kw">function</span> () {};
+
+<span class="ot">Role</span>.<span class="ot">prototype</span>.<span class="fu">set</span> = <span class="fu">fluent</span>( <span class="kw">function</span> (property, name) { 
+  <span class="kw">this</span>[property] = name 
+});
+
+<span class="kw">var</span> doomed = <span class="kw">new</span> <span class="fu">Role</span>()
+  .<span class="fu">set</span>(<span class="st">&#39;name&#39;</span>, <span class="st">&quot;Fredo&quot;</span>)
+  .<span class="fu">set</span>(<span class="st">&#39;relationship&#39;</span>, <span class="st">&#39;brother&#39;</span>)
+  .<span class="fu">set</span>(<span class="st">&#39;parts&#39;</span>, [<span class="st">&#39;I&#39;</span>, <span class="st">&#39;II&#39;</span>]);
+  
+doomed
+  <span class="co">//=&gt; {&quot;name&quot;:&quot;Fredo&quot;,&quot;relationship&quot;:&quot;brother&quot;,&quot;parts&quot;:[&quot;I&quot;,&quot;II&quot;]}</span></code></pre>
+</section><section id="once" class="slide level2">
+<h1>Once</h1>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> once = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">once</span>;
+    
+<span class="kw">var</span> message = <span class="fu">once</span>( <span class="kw">function</span> () { <span class="kw">return</span> <span class="st">&quot;Hello, it&#39;s me&quot;</span>; });
+
+<span class="fu">message</span>()
+  <span class="co">//=&gt; &quot;Hello, it&#39;s me&quot;</span>
+<span class="fu">message</span>()
+  <span class="co">//=&gt; undefined</span>
+<span class="fu">message</span>()
+  <span class="co">//=&gt; undefined</span>
+<span class="fu">message</span>()
+  <span class="co">//=&gt; undefined</span></code></pre>
+<p>Also available with <code>underscore</code>.</p>
+</section><section id="trampolining" class="slide level2">
+<h1>Trampolining</h1>
+<p>Stack-friendly recursion.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> trampoline = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">trampoline</span>,
+    tailCall = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">tailCall</span>;
+    
+<span class="kw">function</span> <span class="fu">factorial</span> (n) {
+  <span class="kw">var</span> _factorial = <span class="fu">trampoline</span>( <span class="kw">function</span> <span class="fu">myself</span> (acc, n) {
+    <span class="kw">return</span> n &gt; <span class="dv">0</span>
+      ? <span class="fu">tailCall</span>(myself, acc * n, n - <span class="dv">1</span>)
+      : acc
+  });
+  
+  <span class="kw">return</span> <span class="fu">_factorial</span>(<span class="dv">1</span>, n);
+};
+
+<span class="fu">factorial</span>(<span class="dv">10</span>);
+  <span class="co">//=&gt; 3628800</span></code></pre>
+</section></section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.min.js"></script>
+
+  <script>
+
+      // Full list of configuration options available here:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+        transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+        // Optional libraries used to extend on reveal.js
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+//          { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; }, }
+//          { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+]});
+    </script>
+  </body>
+</html>

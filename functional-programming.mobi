@@ -39,7 +39,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Hosted at <a href="https://github.com/faizhasim/faizhasim.github.io">Github</a>.</li>
 <li>Mistakes? Improvements? Make me a pull request.</li>
 </ul>
-<h1 id="what-is-functional-programming">What is Functional Programming???</h1>
+<h1 id="what-is-functional-programming">What is Functional Programming?</h1>
 <h2 id="computation-as-functions">Computation as Functions</h2>
 <ul>
 <li>Lambda Calculus</li>
@@ -58,6 +58,59 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <div class="figure">
 <img src="images/dafuq.jpg" />
 </div>
+<h1 id="why-functional-programming-in-js">Why Functional Programming in JS?</h1>
+<hr />
+<ol style="list-style-type: decimal">
+<li>Complexity of States</li>
+</ol>
+<div class="figure">
+<img src="images/going-to-hurt.png" alt="It&#39;s going to hurt now and tomorrow..." /><p class="caption">It's going to hurt now and tomorrow...</p>
+</div>
+<hr />
+<ol start="2" style="list-style-type: decimal">
+<li>Play nice - Now &amp; Future</li>
+</ol>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">requestBillingDetails</span>(allVendors)
+  .<span class="fu">then</span>(<span class="fu">compose</span>(extractContacts, latePayment))
+  .<span class="fu">then</span>(sendEmailNotification)
+  .<span class="fu">catch</span>(ConnectionException, handleConnectionError)
+  .<span class="fu">catch</span>(handleGenericError);</code></pre>
+<p>Promise spec (pipelining)</p>
+<hr />
+<ol start="3" style="list-style-type: decimal">
+<li>Scalability and Reusability</li>
+</ol>
+<ul>
+<li>Web workers.</li>
+<li>Function: Do one thing well, without side-effects.</li>
+</ul>
+<hr />
+<ol start="4" style="list-style-type: decimal">
+<li>Still play nice with existing stuff</li>
+</ol>
+<ul>
+<li>Plain old Javascript object</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> Employee = <span class="kw">new</span> <span class="kw">function</span>(firstName, lastName) {
+  <span class="kw">this</span>.<span class="fu">firstName</span> = firstName;
+  <span class="kw">this</span>.<span class="fu">lastName</span> = lastName;
+}
+
+<span class="ot">Employee</span>.<span class="ot">prototype</span>.<span class="fu">fullName</span> = <span class="fu">fluent</span>(<span class="kw">function</span>(){
+  <span class="kw">return</span> <span class="kw">this</span>.<span class="fu">firstName</span> + <span class="st">&quot; &quot;</span> + <span class="kw">this</span>.<span class="fu">lastName</span>;
+});
+
+<span class="ot">Employee</span>.<span class="ot">prototype</span>.<span class="fu">applyLeave</span> = <span class="fu">fluent</span>(<span class="kw">function</span>(from, to) {
+  <span class="kw">var</span> leaveInfo = LeaveBuilder
+    .<span class="fu">by</span>(<span class="kw">this</span>)
+    .<span class="fu">from</span>(from)
+    .<span class="fu">to</span>(to)
+    .<span class="fu">build</span>();
+
+  LeaveSystem
+    .<span class="fu">submit</span>(leaveInfo)
+    .<span class="fu">then</span>(<span class="fu">notifyManager</span>());
+});</code></pre>
 <h1 id="imperative-vs-functional">Imperative vs Functional</h1>
 <h2 id="example-data">Example data</h2>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsribersOfSocialMedias = [{
@@ -132,8 +185,6 @@ total = subsribersOfSocialMedias
 <img src="images/ecmascript6-javascript.png" />
 </div>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsriberCount = (subsriberInfo) =&gt; <span class="ot">subsriberInfo</span>.<span class="fu">count</span>
-
-<span class="kw">var</span> accumulate = (previousValue, currentValue) =&gt; previousValue + currentValue
 
 <span class="kw">var</span> withOfficialSupport = (officiallySupported) =&gt; (subsriberInfo) =&gt; {
   <span class="kw">return</span> <span class="ot">subsriberInfo</span>.<span class="fu">hasOfficalSupport</span> === officiallySupported
@@ -223,9 +274,11 @@ total = subsribersOfSocialMedias
 <p>Just a lambda (anonymous function)</p>
 <hr />
 <h3 id="currying">Currying?</h3>
-<p>Turning <code>((x,y) ⟼ (x × x) + (y × y))(5,2)</code> into <code>(((x,y) ⟼ (x × x) + (y × y))(5))(2)</code></p>
-<p>Mathematically, if <code>ƒ(x,y) = (x × x) + (y × y)</code>, then:</p>
-<p><code>h(x) = y ⟼ ƒ(x,y)</code></p>
+<ul>
+<li><p>Turning <code>((x,y) ⟼ (x × x) + (y × y))(5,2)</code> into <code>(((x,y) ⟼ (x × x) + (y × y))(5))(2)</code></p></li>
+<li><p>Mathematically, if <code>ƒ(x,y) = (x × x) + (y × y)</code>, then:</p>
+<p>h(x) = y ⟼ ƒ(x,y)</p></li>
+</ul>
 <hr />
 <h3 id="partial-application">Partial application?</h3>
 <p><code>h(x) = y ⟼ ƒ(x,y)</code></p>
@@ -252,7 +305,7 @@ total = subsribersOfSocialMedias
 
 <span class="ot">console</span>.<span class="fu">log</span>(<span class="fu">giveGreetingFrom</span>(<span class="st">&#39;Tom&#39;</span>)(<span class="st">&#39;Bill&#39;</span>));
 <span class="co">// Tom is saying &quot;hi&quot; to Bill</span></code></pre>
-<h1 id="useful-functions-allong.es">Useful functions <code>allong.es</code></h1>
+<h1 id="useful-functions-allong.es">Useful functions allong.es</h1>
 <hr />
 <p>Shamelessly taken from <a href="http://allong.es/try/">allong.es/try</a>.</p>
 <h2 id="fluent">Fluent</h2>

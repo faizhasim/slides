@@ -9,7 +9,7 @@ Some Info
 - Mistakes? Improvements? Make me a pull request.
 
 
-# What is Functional Programming???
+# What is Functional Programming?
 
 
 ## Computation as Functions
@@ -30,6 +30,64 @@ Some Info
 
 ![](images/dafuq.jpg)
 
+
+# Why Functional Programming in JS?
+
+---
+
+1. Complexity of States
+
+![It's going to hurt now and tomorrow...](images/going-to-hurt.png)
+
+---
+
+2. Play nice - Now & Future
+
+```javascript
+requestBillingDetails(allVendors)
+  .then(compose(extractContacts, latePayment))
+  .then(sendEmailNotification)
+  .catch(ConnectionException, handleConnectionError)
+  .catch(handleGenericError);
+```
+Promise spec (pipelining)
+
+
+---
+
+3. Scalability and Reusability
+
+- Web workers.
+- Function: Do one thing well, without side-effects.
+
+---
+
+4. Still play nice with existing stuff
+
+- Plain old Javascript object
+
+```javascript
+var Employee = new function(firstName, lastName) {
+  this.firstName = firstName;
+  this.lastName = lastName;
+}
+
+Employee.prototype.fullName = fluent(function(){
+  return this.firstName + " " + this.lastName;
+});
+
+Employee.prototype.applyLeave = fluent(function(from, to) {
+  var leaveInfo = LeaveBuilder
+    .by(this)
+    .from(from)
+    .to(to)
+    .build();
+
+  LeaveSystem
+    .submit(leaveInfo)
+    .then(notifyManager());
+});
+```
 
 
 
@@ -136,8 +194,6 @@ Wait, what about ECMAScript 6?
 
 ```javascript
 var subsriberCount = (subsriberInfo) => subsriberInfo.count
-
-var accumulate = (previousValue, currentValue) => previousValue + currentValue
 
 var withOfficialSupport = (officiallySupported) => (subsriberInfo) => {
   return subsriberInfo.hasOfficalSupport === officiallySupported
@@ -253,11 +309,11 @@ Just a lambda (anonymous function)
 
 ### Currying?
 
-Turning `((x,y) ⟼ (x × x) + (y × y))(5,2)` into `(((x,y) ⟼ (x × x) + (y × y))(5))(2)`
+- Turning `((x,y) ⟼ (x × x) + (y × y))(5,2)` into `(((x,y) ⟼ (x × x) + (y × y))(5))(2)`
 
-Mathematically, if `ƒ(x,y) = (x × x) + (y × y)`, then:
+- Mathematically, if `ƒ(x,y) = (x × x) + (y × y)`, then:
 
-`h(x) = y ⟼ ƒ(x,y)`
+    h(x) = y ⟼ ƒ(x,y)
 
 ---
 
@@ -296,7 +352,7 @@ console.log(giveGreetingFrom('Tom')('Bill'));
 
 ```
 
-# Useful functions `allong.es`
+# Useful functions allong.es
 
 ---
 

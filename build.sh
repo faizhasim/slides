@@ -5,6 +5,8 @@ if [ ! -d reveal.js/ ]; then
     rm 2.6.2.tar.gz
 fi
 
+cat markdown/*.md > slides.md
+
 docker run -v `pwd`:/source jagregory/pandoc -t revealjs -s /source/slides.md \
   | sed "s/simple.css/default.css/g" \
   | sed "s/007020/40B261/g" \

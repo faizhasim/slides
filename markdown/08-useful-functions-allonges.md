@@ -44,10 +44,14 @@ message()
 
 Also available with `underscore`.
 
+---
+
+![](https://camo.githubusercontent.com/024cb2754860370eff99cab18a885451422a5e03/687474703a2f2f696d67732e786b63642e636f6d2f636f6d6963732f66756e6374696f6e616c2e706e67)
 
 ## Trampolining
 
-Stack-friendly recursion.
+Continuation passing style of function as explained in 
+[Trampolines in JavaScript via raganwald.com](http://raganwald.com/2013/03/28/trampolines-in-javascript.html)
 
 ```javascript
 var trampoline = allong.es.trampoline,

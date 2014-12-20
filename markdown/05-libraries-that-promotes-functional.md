@@ -34,6 +34,3 @@
 - My recommendation: If you think you need it, use it.
 
 
----
-
-![I like Curry... do you? Let's talk curry.](images/curry.jpg)

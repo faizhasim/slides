@@ -55,3 +55,5 @@ Employee.prototype.applyLeave = fluent(function(from, to) {
     .then(notifyManager());
 });
 ```
+
+

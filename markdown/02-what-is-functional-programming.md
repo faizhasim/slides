@@ -1,5 +1,9 @@
 # What is Functional Programming?
 
+---
+
+![Programming is hard](http://imgs.xkcd.com/comics/goto.png)
+
 
 ## Computation as Functions
 

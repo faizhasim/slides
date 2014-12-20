@@ -2,6 +2,8 @@
 
 ---
 
+![I like Curry... do you? Let's talk curry.](images/curry.jpg)
+
 ## Recommended reads
 
 - [Chapter 5 - Higher-Order Functions](http://eloquentjavascript.net/05_higher_order.html) of [Eloquent Javascript](http://eloquentjavascript.net/) - by Marijn Haverbeke
@@ -86,3 +88,5 @@ console.log(giveGreetingFrom('Tom')('Bill'));
 // Tom is saying "hi" to Bill
 
 ```
+
+

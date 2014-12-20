@@ -54,7 +54,12 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <li>Mistakes? Improvements? Make me a pull request.</li>
 </ul>
 </section>
-<section><section id="what-is-functional-programming" class="titleslide slide level1"><h1>What is Functional Programming?</h1></section><section id="computation-as-functions" class="slide level2">
+<section><section id="what-is-functional-programming" class="titleslide slide level1"><h1>What is Functional Programming?</h1></section><section class="slide level2">
+
+<figure>
+<img src="http://imgs.xkcd.com/comics/goto.png" alt="Programming is hard" /><figcaption>Programming is hard</figcaption>
+</figure>
+</section><section id="computation-as-functions" class="slide level2">
 <h1>Computation as Functions</h1>
 <ul>
 <li>Lambda Calculus</li>
@@ -210,16 +215,16 @@ total = subsribersOfSocialMedias
 <figure>
 <img src="images/ecmascript6-javascript.png" />
 </figure>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsriberCount = (subsriberInfo) =&gt; <span class="ot">subsriberInfo</span>.<span class="fu">count</span>
+<pre class="javascriptg"><code>var subsriberCount = (subsriberInfo) =&gt; subsriberInfo.count
 
-<span class="kw">var</span> withOfficialSupport = (officiallySupported) =&gt; (subsriberInfo) =&gt; {
-  <span class="kw">return</span> <span class="ot">subsriberInfo</span>.<span class="fu">hasOfficalSupport</span> === officiallySupported
+var withOfficialSupport = (officiallySupported) =&gt; (subsriberInfo) =&gt; {
+  return subsriberInfo.hasOfficalSupport === officiallySupported
 }
 
-<span class="kw">let</span> total = subsribersOfSocialMedias
-            .<span class="fu">filter</span>(<span class="fu">withOfficialSupport</span>(<span class="kw">true</span>))
-            .<span class="fu">map</span>(subsriberCount)
-            .<span class="fu">reduce</span>((a,b) =&gt; a + b)</code></pre>
+let total = subsribersOfSocialMedias
+            .filter(withOfficialSupport(true))
+            .map(subsriberCount)
+            .reduce((a,b) =&gt; a + b)</code></pre>
 <blockquote>
 <p>CoffeeScript influenced TC-39 decision making.</p>
 </blockquote>
@@ -269,13 +274,101 @@ total = subsribersOfSocialMedias
 <li>Fundementally build from <code>curry</code>-ing and partial applications.</li>
 <li>My recommendation: If you think you need it, use it.</li>
 </ul>
-</section><section class="slide level2">
+</section></section>
+<section><section id="common-hof" class="titleslide slide level1"><h1>Common HoF</h1></section><section class="slide level2">
+
+<p>Examples are using <a href="http://danieltao.com/lazy.js/docs/">Lazy.js</a>.</p>
+<blockquote>
+<p><code>Sequence</code>: Represent both Array and Object</p>
+</blockquote>
+</section><section id="map-function" class="slide level2">
+<h1><a href="http://danieltao.com/lazy.js/docs/#Sequence-map">Map</a> function</h1>
+<blockquote>
+<p>Create new sequence whose elements are calculated from the supplied mapping function.</p>
+</blockquote>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="fu">Lazy</span>([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]).<span class="fu">map</span>(<span class="kw">function</span>(val) {
+  <span class="kw">return</span> val * val;
+}).<span class="fu">toArray</span>();
+
+<span class="co">// [1, 4, 9, 16, 25]</span></code></pre>
+</section><section id="pluck-function" class="slide level2">
+<h1><a href="http://danieltao.com/lazy.js/docs/#Sequence-pluck">Pluck</a> function</h1>
+<blockquote>
+<p>Create new sequence from the key property of of each element in the existing sequence</p>
+</blockquote>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> subsribersOfSocialMedias = [{
+  <span class="dt">serviceName</span>: <span class="st">&#39;facebook&#39;</span>,
+  <span class="dt">count</span>: <span class="dv">35433</span>,
+  <span class="dt">hasOfficalSupport</span>: <span class="kw">true</span>
+}, {
+  <span class="dt">serviceName</span>: <span class="st">&#39;twitter&#39;</span>,
+  <span class="dt">count</span>: <span class="dv">25433</span>,
+  <span class="dt">hasOfficalSupport</span>: <span class="kw">true</span>
+}, {
+  <span class="dt">serviceName</span>: <span class="st">&#39;instagram&#39;</span>,
+  <span class="dt">count</span>: <span class="dv">2348</span>,
+  <span class="dt">hasOfficalSupport</span>: <span class="kw">false</span>
+}];
+
+<span class="fu">Lazy</span>(subsribersOfSocialMedias).<span class="fu">pluck</span>(<span class="st">&#39;count&#39;</span>).<span class="fu">toArray</span>();
+<span class="co">// [35433, 25433, 2348]</span></code></pre>
+</section><section id="reduce-function" class="slide level2">
+<h1><a href="http://danieltao.com/lazy.js/docs/#Sequence-reduce">Reduce</a> function</h1>
+<blockquote>
+<p>Aggregation using an accumulator function</p>
+</blockquote>
+<ul>
+<li><a href="http://danieltao.com/lazy.js/docs/#Sequence-reduceRight">Reduce right</a> also available.</li>
+<li>From previous example:</li>
+</ul>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> counts = <span class="fu">Lazy</span>(subsribersOfSocialMedias).<span class="fu">pluck</span>(<span class="st">&#39;count&#39;</span>);
+
+<span class="ot">counts</span>.<span class="fu">reduce</span>(<span class="kw">function</span>(x, y) {
+  <span class="kw">return</span> x + y;
+});
+<span class="co">// 63214</span></code></pre>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">counts</span>.<span class="fu">reduce</span>(<span class="kw">function</span>(x, y) {
+  <span class="kw">return</span> x + y;
+}, <span class="dv">0</span>);
+<span class="co">// 63214</span></code></pre>
+</section><section id="reject-function" class="slide level2">
+<h1><a href="http://danieltao.com/lazy.js/docs/#Sequence-reject">Reject</a> function</h1>
+<blockquote>
+<p>Exclude elements based on the supplied function</p>
+</blockquote>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> noFacebook = <span class="kw">function</span>(obj) {
+  <span class="kw">if</span> (<span class="ot">obj</span>.<span class="fu">serviceName</span> === <span class="st">&#39;facebook&#39;</span>) {
+    <span class="kw">return</span> <span class="kw">true</span>;
+  }
+  <span class="kw">return</span> <span class="kw">false</span>;
+}
+
+<span class="fu">Lazy</span>(subsribersOfSocialMedias)
+  .<span class="fu">reject</span>(noFacebook)
+  .<span class="fu">toArray</span>();
+
+<span class="fu">Lazy</span>(subsribersOfSocialMedias)
+  .<span class="fu">reject</span>(noFacebook)
+  .<span class="fu">reject</span>({<span class="dt">hasOfficalSupport</span>: <span class="kw">true</span>})
+  .<span class="fu">toArray</span>();</code></pre>
+</section><section id="sort-by-function" class="slide level2">
+<h1><a href="http://danieltao.com/lazy.js/docs/#Sequence-sortBy">Sort By</a> function</h1>
+<blockquote>
+<p>Exclude elements based on the supplied function</p>
+</blockquote>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> count = <span class="kw">function</span>(obj) {
+  <span class="kw">return</span> <span class="ot">obj</span>.<span class="fu">count</span>;
+}
+
+<span class="fu">Lazy</span>(subsribersOfSocialMedias).<span class="fu">sortBy</span>(count).<span class="fu">first</span>();
+<span class="co">// {serviceName: &quot;instagram&quot;, count: 2348, hasOfficalSupport: false}</span></code></pre>
+</section></section>
+<section><section id="partial-application-and-currying" class="titleslide slide level1"><h1>Partial Application and Currying</h1></section><section class="slide level2">
 
 <figure>
 <img src="images/curry.jpg" alt="I like Curry... do you? Let&#39;s talk curry." /><figcaption>I like Curry... do you? Let's talk curry.</figcaption>
 </figure>
-</section></section>
-<section><section id="partial-application-and-currying" class="titleslide slide level1"><h1>Partial Application and Currying</h1></section><section id="recommended-reads" class="slide level2">
+</section><section id="recommended-reads" class="slide level2">
 <h1>Recommended reads</h1>
 <ul>
 <li><a href="http://eloquentjavascript.net/05_higher_order.html">Chapter 5 - Higher-Order Functions</a> of <a href="http://eloquentjavascript.net/">Eloquent Javascript</a> - by Marijn Haverbeke</li>
@@ -375,9 +468,14 @@ doomed
 <span class="fu">message</span>()
   <span class="co">//=&gt; undefined</span></code></pre>
 <p>Also available with <code>underscore</code>.</p>
+</section><section class="slide level2">
+
+<figure>
+<img src="https://camo.githubusercontent.com/024cb2754860370eff99cab18a885451422a5e03/687474703a2f2f696d67732e786b63642e636f6d2f636f6d6963732f66756e6374696f6e616c2e706e67" />
+</figure>
 </section><section id="trampolining" class="slide level2">
 <h1>Trampolining</h1>
-<p>Stack-friendly recursion.</p>
+<p>Continuation passing style of function as explained in <a href="http://raganwald.com/2013/03/28/trampolines-in-javascript.html">Trampolines in JavaScript via raganwald.com</a></p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> trampoline = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">trampoline</span>,
     tailCall = <span class="ot">allong</span>.<span class="ot">es</span>.<span class="fu">tailCall</span>;
     

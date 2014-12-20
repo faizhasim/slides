@@ -99,7 +99,7 @@ Wait, what about ECMAScript 6?
 
 ![](images/ecmascript6-javascript.png)
 
-```javascript
+```javascriptg
 var subsriberCount = (subsriberInfo) => subsriberInfo.count
 
 var withOfficialSupport = (officiallySupported) => (subsriberInfo) => {
@@ -128,3 +128,5 @@ let total = subsribersOfSocialMedias
 ---
 
 ![Should we continue?](images/so-much-fun.jpg)
+
+
